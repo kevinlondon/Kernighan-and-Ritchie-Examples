@@ -1,32 +1,28 @@
 #include <stdio.h>
 
-/* count digits, white space, others */
+/* 1-14: Count all characters and print frequency. */
+
+# define NUMCHARS 128 
+# define FIRSTCHAR 32
+
 main()
 {
-    int c, i, x, nwhite, nother;
-    int ndigit[10];
+    int c, x, chars[NUMCHARS];
 
-    nwhite = nother = 0;
-    for (i = 0; i < 10; ++i)
-        ndigit[i] = 0;
+    for (c = FIRSTCHAR; c < NUMCHARS; ++c)
+        chars[c] = 0;
 
-    while ((c = getchar()) != EOF)
-        if (c >= '0' && c <= '9')
-            ++ndigit[c-'0'];
-        else if (c == ' ' || c == '\n' || c == '\t')
-            ++nwhite;
-        else
-            ++nother;
+    while ((c = getchar()) != EOF){
+        if (c >= FIRSTCHAR && c <= NUMCHARS)
+            chars[c] += 1;
+    }
 
-    printf("digits\n");
-    for (i = 0; i < 10; ++i)
-    {
-        printf("  %d: ", i);
-        for (x = 0; x < ndigit[i]; ++x)
+    printf("characters\n");
+    for (c = FIRSTCHAR; c < NUMCHARS; ++c){
+        printf("  %c: ", c);
+        for (x = 0; x < chars[c]; ++x)
             printf("x");
-        
+
         printf("\n");
     }
-    printf("white space = %d, other = %d\n",
-        nwhite, nother);
 }
