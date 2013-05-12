@@ -21,7 +21,7 @@ main()
     }
 }
 
-/* reverse: Copy a string in reverse and modify in-place */
+/* reverse: Print a string in reverse */
 void reverse(char s[], int strlen)
 {
     int i;
