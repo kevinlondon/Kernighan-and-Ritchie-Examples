@@ -41,5 +41,5 @@ float convert_to_celsius(int fahr)
 /* print_formatted: use a standardized print for both temp readings. */
 int print_formatted(int old_temp, float new_temp)
 {
-    printf("%3d %6.1f\n", old_temp, new_temp);
+    printf("%3d\t to\t %6.1f\n", old_temp, new_temp);
 }
