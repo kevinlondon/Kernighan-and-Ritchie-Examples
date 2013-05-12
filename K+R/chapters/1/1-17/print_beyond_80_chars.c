@@ -1,6 +1,6 @@
 #include <stdio.h>
 #define MAXLINE 1000    /* maximum input line length */
-#define MINLINE 81      /* minimum input line length */
+#define MINLINE 80      /* minimum input line length */
 
 int my_getline(char line[], int maxline);
 void copy(char to[], char from[]);
