@@ -45,6 +45,9 @@ int entab(char line[], int ncolumns, int maxlen)
             }
             head = 0;
             tail = 0;
+            if (c == '\t'){
+                i += ncolumns - (i % ncolumns);
+            }
             putchar(c);
         }
         else if (head == 0){
