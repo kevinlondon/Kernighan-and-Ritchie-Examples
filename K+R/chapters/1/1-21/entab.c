@@ -26,14 +26,16 @@ int entab(char line[], int ncolumns, int maxlen)
     int head, tail, gap, to_tab;
 
     i = 0;
-    head = 0;
-    tail = 0;
+    head = 0;   /* first seen space in a sequence */
+    tail = 0;   /* index for last seen space in a sequence */
     while ((c = getchar()) != EOF && c != '\n') {
         if (c != ' '){
             while (head <= tail && head > 0){
+                // Distance between first space and last space
                 gap = (tail - head) + 1;
+
+                // Distance between the current head and the next tabstop
                 to_tab = ncolumns - ((head) % ncolumns);
-                //printf("Head: %d, Tail: %d, Index: %d, Gap: %d, To_Tab: %d\n", head, tail, i, gap, to_tab);
                 if (to_tab > 0 && gap >= to_tab) {
                     putchar('\t');
                     head += to_tab;
@@ -43,8 +45,12 @@ int entab(char line[], int ncolumns, int maxlen)
                     ++head;
                 }
             }
+            // Re-init the head/tail markers as they're for spaces.
             head = 0;
             tail = 0;
+
+            // If it's a tab, adjust where we think we are in the line
+            // by going to the next tab stop.
             if (c == '\t'){
                 i += ncolumns - (i % ncolumns);
             }
