@@ -15,7 +15,6 @@ main()
     char line[MAXLENGTH];
     int ncolumns;
 
-
     ncolumns = 8;
     while ((len = entab(line, ncolumns, MAXLENGTH)) > 0)
         ;
@@ -24,40 +23,36 @@ main()
 int entab(char line[], int ncolumns, int maxlen)
 {
     int i, c;
-    int first_space, last_space, gap, to_tab;
+    int head, tail, gap, to_tab;
 
     i = 0;
-    first_space = 0;
-    last_space = 0;
+    head = 0;
+    tail = 0;
     while ((c = getchar()) != EOF && c != '\n') {
         if (c != ' '){
-            while (first_space < last_space){
-                gap = last_space - first_space;
-                to_tab = (first_space+1) % ncolumns;
-                if (to_tab > gap){
-                    putchar(' ');
-                    ++first_space;
+            while (head <= tail && head > 0){
+                gap = (tail - head) + 1;
+                to_tab = ncolumns - ((head) % ncolumns);
+                //printf("Head: %d, Tail: %d, Index: %d, Gap: %d, To_Tab: %d\n", head, tail, i, gap, to_tab);
+                if (to_tab > 0 && gap >= to_tab) {
+                    putchar('\t');
+                    head += to_tab;
                 }
                 else {
-                    putchar('\t');
-                    first_space += to_tab;
+                    putchar(' ');
+                    ++head;
                 }
-                putchar(' ');
-                ++first_space;
             }
-            if (last_space > 0){
-                i = last_space;
-                first_space = 0;
-                last_space = 0;
-            }
+            head = 0;
+            tail = 0;
             putchar(c);
         }
-        else if (first_space == 0){
-            first_space = i;
-            last_space = i;
+        else if (head == 0){
+            head = i;
+            tail = i;
         }
         else {
-            last_space = i;
+            tail = i;
         }
         ++i;
     }
