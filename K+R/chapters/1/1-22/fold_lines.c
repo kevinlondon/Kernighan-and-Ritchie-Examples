@@ -20,7 +20,7 @@ before nth column of input
 So track an index of the last blank or tab character.
 
 "very long lines" - if buffer fills up, try to split it and process what exists
-"if no blanks or tabs" - try to go up to to 20% more above the length of the line.
+"if no blanks or tabs" - try to go up to to 50% more above the length of the line.
 if nothing exists, copy as is up to the length of the line. */
 
 main()
@@ -30,9 +30,11 @@ main()
     int nonchar;            /* last seen non-character index */
     char line[MAXLINE];       /* current input line */
     int i, count;
+    int newbreak;             /* new linebreak index */
 
     space = 0;
     nonchar = 0;
+    newbreak = 0;
 
     while ((len = my_getline(line)) > 0){
         if (len > LINELIM) {
@@ -44,15 +46,19 @@ main()
                 else if (!isalpha(line[i]))
                     nonchar = i;
 
-                if (count == LINELIM){
+                if (count >= LINELIM){
                     if (space > 0)
-                        line[space] = '\n';
-                    else
-                        line[nonchar] = '\n';
+                        newbreak = space;
+                    else if (count > (LINELIM * 1.5))
+                        newbreak = nonchar;
 
-                    count = 0;
-                    space = 0;
-                    nonchar = 0;
+                    if (newbreak > 0){
+                        line[newbreak] = '\n';
+                        count = 0;
+                        space = 0;
+                        nonchar = 0;
+                        newbreak = 0;
+                    }
                 }
                 ++count;
                 ++i;
