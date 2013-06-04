@@ -6,12 +6,12 @@ very long lines, and if there are no blanks or tabs before the
 specified column. */
 
 #include <stdio.h>
+#include <ctype.h>              /* for determining if something is char */
 
 #define MAXLINE     1000        /* maximum input line size */
 #define LINELIM   79          /* Once it reaches this point, wrap it. */
 
 int my_getline(char s[]);
-
 
 /*
 after the last non-blank character
@@ -27,10 +27,12 @@ main()
 {
     int len;                /* current line length */
     int space;              /* last seen space index */
+    int nonchar;            /* last seen non-character index */
     char line[MAXLINE];       /* current input line */
     int i, count;
 
-    space = -1;
+    space = 0;
+    nonchar = 0;
 
     while ((len = my_getline(line)) > 0){
         if (len > LINELIM) {
@@ -39,10 +41,18 @@ main()
             while (i < len){
                 if (line[i] == ' ' || line[i] == '\t')
                     space = i;
+                else if (!isalpha(line[i]))
+                    nonchar = i;
 
                 if (count == LINELIM){
-                    line[space] = '\n';
+                    if (space > 0)
+                        line[space] = '\n';
+                    else
+                        line[nonchar] = '\n';
+
                     count = 0;
+                    space = 0;
+                    nonchar = 0;
                 }
                 ++count;
                 ++i;
